@@ -116,3 +116,111 @@
 //	dezalocareVectorMasini(&masini, &nrMasini);
 //	return 0;
 //}
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct StructuraCarte {
+	int id;
+	int nrPagini;
+	float pret;
+	char* titlu;
+	char* autor;
+	unsigned char editie;
+};
+typedef struct StructuraCarte Carte;
+
+void afisareCarte(Carte carte) {
+	printf("\nID: %d\n", carte.id);
+	printf("Numarr pagini: %d\n", carte.nrPagini);
+	printf("Pret: %2f\n", carte.pret);
+	printf("Titlu: %s\n", carte.titlu);
+	printf("Autor: %s\n", carte.autor);
+	printf("Editie: %c\n\n", carte.editie);
+}
+
+void afisareVectorCarti(Carte* carti, int nrCarti) {
+	for (int i = 0;i < nrCarti;i++)
+	{
+		afisareCarte(carti[i]);
+	}
+}
+
+void adaugaCarteInVector(Carte** carti, int* nrCarti, Carte carteNoua) {
+	Carte* temp = (Carte*)malloc(sizeof(Carte) * ((*nrCarti) + 1));
+	for (int i = 0; i < (*nrCarti);i++)
+	{
+		temp[i] = (*carti)[i];
+	}
+	temp[*nrCarti] = carteNoua;
+	free(*carti);
+	(*carti) = temp;
+	(*nrCarti)++;
+}
+
+Carte citireCarteFisier(FILE* file) {
+	Carte c;
+	char buffer[100];
+	if (fgets(buffer, 100, file) == NULL)
+	{
+		c.titlu = NULL;
+		c.autor = NULL;
+		return c;
+	}
+	char var[3] = ",\n";
+	c.id = atoi(strtok(buffer, var));
+	c.nrPagini = atoi(strtok(NULL, var));
+	c.pret = atof(strtok(NULL, var));
+	char* aux = strtok(NULL, var);
+	c.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+	strcpy_s(c.titlu, strlen(aux) + 1, aux);
+	aux = strtok(NULL, var);
+	c.autor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+	strcpy_s(c.autor, strlen(aux) + 1, aux);
+	c.editie = (strtok(NULL, var))[0];
+	return c;
+
+}
+
+Carte* citireVectorCartiFisier(const char* numeFisier, int* nrCartiCitite) {
+	FILE* f;
+	f = fopen(numeFisier, "r");
+	Carte* carti = NULL;
+	*nrCartiCitite = 0;
+	while (!feof(f))
+	{
+		Carte c;
+		c = citireCarteFisier(f);
+		if (c.titlu != NULL)
+		{
+			adaugaCarteInVector(&carti, nrCartiCitite, c);
+		}
+
+	}
+	fclose(f);
+	return carti;
+}
+
+void dezalocareVectorCarti(Carte** vector, int* nrCarti) {
+	for (int i = 0; i < (*nrCarti);i++)
+	{
+		free((*vector)[i].titlu);
+		free((*vector)[i].autor);
+	}
+	free(*vector);
+	(*vector) = NULL;
+	*nrCarti = 0;
+
+}
+
+int main() {
+	int nrCarti = 0;
+	Carte* carti = NULL;
+	carti = citireVectorCartiFisier("carti.txt", &nrCarti);
+	afisareVectorCarti(carti, nrCarti);
+	dezalocareVectorCarti(&carti, &nrCarti);
+
+	return 0;
+}

@@ -1,0 +1,6 @@
+1,320,45.5,Enigma Otiliei,George Calinescu,1
+2,210,39.9,Morometii,Marin Preda,2
+3,500,60.0,Amintiri din copilarie,Ion Creanga,3
+4,410,55.7,Padurea spanzuratilor,Liviu Rebreanu,1
+5,280,42.3,Baltagul,Mihail Sadoveanu,2
+6,350,47.9,Ultima noapte de dragoste,Camil Petrescu,1
