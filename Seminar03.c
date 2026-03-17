@@ -228,100 +228,100 @@
 
 
 
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-struct StructuraZbor {
-	int id;
-	int nrPasageri;
-	float durata;
-	char* aeroportPlecare;
-	char* aeroportSosire;
-	unsigned char status; // 0=la timp, 1=întârziat, 2=anulat
-};
-typedef struct StructuraZbor Zbor;
-
-void afisareZbor(Zbor zbor) {
-	printf("ID: %d\n", zbor.id);
-	printf("PASAGERI: %d\n", zbor.nrPasageri);
-	printf("DURATA: %.2f\n", zbor.durata);
-	printf("PLECARE: %s\n", zbor.aeroportPlecare);
-	printf("SOSIRE: %s\n", zbor.aeroportSosire);
-	printf("STATUS: %c\n\n", zbor.status);
-}
-
-void afisareVectorz(Zbor* z, int nrZbor) {
-	for (int i = 0; i < nrZbor;i++)
-	{
-		afisareZbor(z[i]);
-	}
-}
-
-void adaugaZborInVector(Zbor** z, int* nrZbor, Zbor zborNou) {
-	Zbor* temp = (Zbor*)malloc(sizeof(Zbor) * ((*nrZbor) + 1));
-	for (int i = 0;i < *nrZbor;i++)
-	{
-		temp[i] = (*z)[i];
-	}
-	temp[*nrZbor] = zborNou;
-	free(*z);
-	(*z) = temp;
-	(*nrZbor)++;
-}
-
-Zbor citireZborFisier(FILE* file) {
-	Zbor z;
-	char buffer[100];
-	char sep[3] = ",\n";
-	fgets(buffer, 100, file);
-	z.id = atoi(strtok(buffer, sep));
-	z.nrPasageri = atoi(strtok(NULL, sep));
-	z.durata = atof(strtok(NULL, sep));
-	char* aux = strtok(NULL, sep);
-	z.aeroportPlecare = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
-	strcpy(z.aeroportPlecare, aux);
-	aux = strtok(NULL, sep);
-	z.aeroportSosire = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
-	strcpy(z.aeroportSosire, aux);
-	z.status = (strtok(NULL, sep))[0];
-	return z;
-}
-
-Zbor* citireVectorZborFisier(const char* numeFisier, int* nrZborCit) {
-	FILE* f = fopen(numeFisier, "r");
-	Zbor* z;
-	z = NULL;
-	(*nrZborCit) = 0;
-	while (!feof(f))
-	{
-		adaugaZborInVector(&z, nrZborCit, citireZborFisier(f));
-	}
-	fclose(f);
-
-
-	return z;
-}
-
-void dezalocareVectorZbor(Zbor** vector, int* nrZbor) {
-	for (int i = 0;i < (*nrZbor);i++)
-	{
-		free((*vector)[i].aeroportPlecare);
-		free((*vector)[i].aeroportSosire);
-	}
-	free(*vector);
-	(*vector) = NULL;
-	nrZbor = 0;
-}
-
-int main() {
-	Zbor* z;
-	int nrZbor = 0;
-	z = citireVectorZborFisier("zbor.txt", &nrZbor);
-	afisareVectorz(z, nrZbor);
-	dezalocareVectorZbor(&z, &nrZbor);
-
-	return 0;
-}
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//
+//struct StructuraZbor {
+//	int id;
+//	int nrPasageri;
+//	float durata;
+//	char* aeroportPlecare;
+//	char* aeroportSosire;
+//	unsigned char status; // 0=la timp, 1=întârziat, 2=anulat
+//};
+//typedef struct StructuraZbor Zbor;
+//
+//void afisareZbor(Zbor zbor) {
+//	printf("ID: %d\n", zbor.id);
+//	printf("PASAGERI: %d\n", zbor.nrPasageri);
+//	printf("DURATA: %.2f\n", zbor.durata);
+//	printf("PLECARE: %s\n", zbor.aeroportPlecare);
+//	printf("SOSIRE: %s\n", zbor.aeroportSosire);
+//	printf("STATUS: %c\n\n", zbor.status);
+//}
+//
+//void afisareVectorz(Zbor* z, int nrZbor) {
+//	for (int i = 0; i < nrZbor;i++)
+//	{
+//		afisareZbor(z[i]);
+//	}
+//}
+//
+//void adaugaZborInVector(Zbor** z, int* nrZbor, Zbor zborNou) {
+//	Zbor* temp = (Zbor*)malloc(sizeof(Zbor) * ((*nrZbor) + 1));
+//	for (int i = 0;i < *nrZbor;i++)
+//	{
+//		temp[i] = (*z)[i];
+//	}
+//	temp[*nrZbor] = zborNou;
+//	free(*z);
+//	(*z) = temp;
+//	(*nrZbor)++;
+//}
+//
+//Zbor citireZborFisier(FILE* file) {
+//	Zbor z;
+//	char buffer[100];
+//	char sep[3] = ",\n";
+//	fgets(buffer, 100, file);
+//	z.id = atoi(strtok(buffer, sep));
+//	z.nrPasageri = atoi(strtok(NULL, sep));
+//	z.durata = atof(strtok(NULL, sep));
+//	char* aux = strtok(NULL, sep);
+//	z.aeroportPlecare = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(z.aeroportPlecare, aux);
+//	aux = strtok(NULL, sep);
+//	z.aeroportSosire = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(z.aeroportSosire, aux);
+//	z.status = (strtok(NULL, sep))[0];
+//	return z;
+//}
+//
+//Zbor* citireVectorZborFisier(const char* numeFisier, int* nrZborCit) {
+//	FILE* f = fopen(numeFisier, "r");
+//	Zbor* z;
+//	z = NULL;
+//	(*nrZborCit) = 0;
+//	while (!feof(f))
+//	{
+//		adaugaZborInVector(&z, nrZborCit, citireZborFisier(f));
+//	}
+//	fclose(f);
+//
+//
+//	return z;
+//}
+//
+//void dezalocareVectorZbor(Zbor** vector, int* nrZbor) {
+//	for (int i = 0;i < (*nrZbor);i++)
+//	{
+//		free((*vector)[i].aeroportPlecare);
+//		free((*vector)[i].aeroportSosire);
+//	}
+//	free(*vector);
+//	(*vector) = NULL;
+//	nrZbor = 0;
+//}
+//
+//int main() {
+//	Zbor* z;
+//	int nrZbor = 0;
+//	z = citireVectorZborFisier("zbor.txt", &nrZbor);
+//	afisareVectorz(z, nrZbor);
+//	dezalocareVectorZbor(&z, &nrZbor);
+//
+//	return 0;
+//}
