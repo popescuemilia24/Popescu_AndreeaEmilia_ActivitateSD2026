@@ -31,5 +31,6 @@
   <ItemGroup>
     <Text Include="masini.txt" />
     <Text Include="carti.txt" />
+    <Text Include="zbor.txt" />
   </ItemGroup>
 </Project>
