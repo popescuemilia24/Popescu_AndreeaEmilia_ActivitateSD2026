@@ -411,219 +411,219 @@
 
 
 
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct StructuraCarte {
-	int id;
-	int nrPagini;
-	float pret;
-	char* titlu;
-	char* autor;
-	unsigned char editie;
-};
-typedef struct StructuraCarte Carte;
-
-typedef struct Nod Nod;
-struct Nod
-{
-	Carte info;
-	Nod* next;
-};
-
-
-Carte citireCarteFisier(FILE* file) {
-	Carte c;
-	char buffer[100];
-	if (fgets(buffer, 100, file) == NULL)
-	{
-		c.titlu = NULL;
-		c.autor = NULL;
-		return c;
-	}
-	char var[3] = ",\n";
-	c.id = atoi(strtok(buffer, var));
-	c.nrPagini = atoi(strtok(NULL, var));
-	c.pret = atof(strtok(NULL, var));
-	char* aux = strtok(NULL, var);
-	c.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
-	strcpy_s(c.titlu, strlen(aux) + 1, aux);
-	aux = strtok(NULL, var);
-	c.autor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
-	strcpy_s(c.autor, strlen(aux) + 1, aux);
-	c.editie = (strtok(NULL, var))[0];
-	return c;
-
-}
-
-void afisareCarte(Carte carte) {
-	printf("\nID: %d\n", carte.id);
-	printf("Numarr pagini: %d\n", carte.nrPagini);
-	printf("Pret: %5.2f\n", carte.pret);
-	printf("Titlu: %s\n", carte.titlu);
-	printf("Autor: %s\n", carte.autor);
-	printf("Editie: %c\n\n", carte.editie);
-}
-
-void afisareListaCarti(Nod* cap) {
-	while (cap != NULL)
-	{
-		afisareCarte(cap->info);
-		cap = cap->next;
-	}
-}
-
-void adaugaCarteInLista(Nod** cap, Carte carteNoua) {
-	Nod* n = (Nod*)malloc(sizeof(Nod));
-	n->info = carteNoua;
-	n->next = NULL;
-	if (*cap == NULL)
-	{
-		(*cap) = n;
-	}
-	else {
-		Nod* c = (*cap);
-		while (c->next != NULL)
-		{
-			c = c->next;
-		}
-		c->next = n;
-
-	}
-}
-
-void adaugaLaInceputInLista(Nod** cap, Carte carteNoua) {
-	Nod* n = (Nod*)malloc(sizeof(Nod));
-	n->info = carteNoua;
-	n->next = *cap;
-	(*cap) = n;
-
-}
-
-Nod* citireListaCartiDinFisier(const char* numeFisier) {
-	FILE* f = fopen(numeFisier, "r");
-	if (f)
-	{
-		Nod* cap = NULL;
-		while (!feof(f))
-		{
-			adaugaCarteInLista(&cap, citireCarteFisier(f));
-		}
-		fclose(f);
-		return cap;
-	}
-	return NULL;
-
-}
-
-void dezalocareListaCarti(Nod** cap) {
-	while (*cap)
-	{
-		Nod* c = *cap;
-		(*cap) = c->next;
-		if (c->info.autor != NULL)
-		{
-			free(c->info.autor);
-		}
-		if (c->info.titlu != NULL) {
-			free(c->info.titlu);
-		}
-		free(c);
-	}
-}
-
-float calculeazaPretMediu(Nod* cap) {
-	float sum = 0;
-	int k = 0;
-	while (cap)
-	{
-		sum += (cap->info.pret);
-		k++;
-		cap = cap->next;
-	}
-	if (k != 0)
-	{
-		return sum / k;
-	}
-	else return 0;
-}
-
-void stergeCartiDinEditia(Nod** cap, char editieCautata) {
-	while ((*cap) != NULL && (*cap)->info.autor == editieCautata)
-	{
-		Nod* temp = *cap;
-		(*cap) = temp->next;
-		if (temp->info.autor != NULL)
-		{
-			free(temp->info.autor);
-		}
-		if (temp->info.titlu != NULL)
-		{
-			free(temp->info.titlu);
-		}
-	}
-
-	Nod* c = *cap;
-	while (c) {
-		while (c->next && c->next->info.editie != editieCautata) {
-			c = c->next;
-		}
-
-		if (c->next) {
-			Nod* temp = c->next;
-			c->next = temp->next;
-
-			if (temp->info.autor) {
-				free(temp->info.autor);
-			}
-			if (temp->info.titlu)
-				free(temp->info.titlu);
-			free(temp);
-		}
-		else {
-			c = c->next;
-		}
-	}
-}
-
-float calculeazaPretulCartilorUnuiAutor(Nod* cap, const char* numeAutor) {
-	float tot = 0;
-	while (cap != NULL)
-	{
-		if (strcmp(cap->info.autor, numeAutor) == 0)
-		{
-			tot += (cap->info.pret);
-		}
-		cap = cap->next;
-	}
-	return tot;
-}
-
-int main() {
-
-	Nod* cap = NULL;
-	cap = citireListaCartiDinFisier("carti.txt");
-	afisareListaCarti(cap);
-
-
-
-	printf("Pretul medie este: %5.2f\n\n", calculeazaPretMediu(cap));
-
-	const char* autorCautat = "Liviu Rebreanu";
-	printf("Pretul total al cartilor autorului %s este: %5.2f\n\n", autorCautat, calculeazaPretulCartilorUnuiAutor(cap, autorCautat));
-
-
-	printf("Stergere carti din editia 2\n");
-	stergeCartiDinEditia(&cap, '2');
-
-	printf("\nLista dupa stegrea cartilor din editia 2:\n");
-	afisareListaCarti(cap);
-
-	dezalocareListaCarti(&cap);
-	printf("\nLista dupa dezalocare\n");
-	afisareListaCarti(cap);
-
-	return 0;
-}
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraCarte {
+//	int id;
+//	int nrPagini;
+//	float pret;
+//	char* titlu;
+//	char* autor;
+//	unsigned char editie;
+//};
+//typedef struct StructuraCarte Carte;
+//
+//typedef struct Nod Nod;
+//struct Nod
+//{
+//	Carte info;
+//	Nod* next;
+//};
+//
+//
+//Carte citireCarteFisier(FILE* file) {
+//	Carte c;
+//	char buffer[100];
+//	if (fgets(buffer, 100, file) == NULL)
+//	{
+//		c.titlu = NULL;
+//		c.autor = NULL;
+//		return c;
+//	}
+//	char var[3] = ",\n";
+//	c.id = atoi(strtok(buffer, var));
+//	c.nrPagini = atoi(strtok(NULL, var));
+//	c.pret = atof(strtok(NULL, var));
+//	char* aux = strtok(NULL, var);
+//	c.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.titlu, strlen(aux) + 1, aux);
+//	aux = strtok(NULL, var);
+//	c.autor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.autor, strlen(aux) + 1, aux);
+//	c.editie = (strtok(NULL, var))[0];
+//	return c;
+//
+//}
+//
+//void afisareCarte(Carte carte) {
+//	printf("\nID: %d\n", carte.id);
+//	printf("Numarr pagini: %d\n", carte.nrPagini);
+//	printf("Pret: %5.2f\n", carte.pret);
+//	printf("Titlu: %s\n", carte.titlu);
+//	printf("Autor: %s\n", carte.autor);
+//	printf("Editie: %c\n\n", carte.editie);
+//}
+//
+//void afisareListaCarti(Nod* cap) {
+//	while (cap != NULL)
+//	{
+//		afisareCarte(cap->info);
+//		cap = cap->next;
+//	}
+//}
+//
+//void adaugaCarteInLista(Nod** cap, Carte carteNoua) {
+//	Nod* n = (Nod*)malloc(sizeof(Nod));
+//	n->info = carteNoua;
+//	n->next = NULL;
+//	if (*cap == NULL)
+//	{
+//		(*cap) = n;
+//	}
+//	else {
+//		Nod* c = (*cap);
+//		while (c->next != NULL)
+//		{
+//			c = c->next;
+//		}
+//		c->next = n;
+//
+//	}
+//}
+//
+//void adaugaLaInceputInLista(Nod** cap, Carte carteNoua) {
+//	Nod* n = (Nod*)malloc(sizeof(Nod));
+//	n->info = carteNoua;
+//	n->next = *cap;
+//	(*cap) = n;
+//
+//}
+//
+//Nod* citireListaCartiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	if (f)
+//	{
+//		Nod* cap = NULL;
+//		while (!feof(f))
+//		{
+//			adaugaCarteInLista(&cap, citireCarteFisier(f));
+//		}
+//		fclose(f);
+//		return cap;
+//	}
+//	return NULL;
+//
+//}
+//
+//void dezalocareListaCarti(Nod** cap) {
+//	while (*cap)
+//	{
+//		Nod* c = *cap;
+//		(*cap) = c->next;
+//		if (c->info.autor != NULL)
+//		{
+//			free(c->info.autor);
+//		}
+//		if (c->info.titlu != NULL) {
+//			free(c->info.titlu);
+//		}
+//		free(c);
+//	}
+//}
+//
+//float calculeazaPretMediu(Nod* cap) {
+//	float sum = 0;
+//	int k = 0;
+//	while (cap)
+//	{
+//		sum += (cap->info.pret);
+//		k++;
+//		cap = cap->next;
+//	}
+//	if (k != 0)
+//	{
+//		return sum / k;
+//	}
+//	else return 0;
+//}
+//
+//void stergeCartiDinEditia(Nod** cap, char editieCautata) {
+//	while ((*cap) != NULL && (*cap)->info.autor == editieCautata)
+//	{
+//		Nod* temp = *cap;
+//		(*cap) = temp->next;
+//		if (temp->info.autor != NULL)
+//		{
+//			free(temp->info.autor);
+//		}
+//		if (temp->info.titlu != NULL)
+//		{
+//			free(temp->info.titlu);
+//		}
+//	}
+//
+//	Nod* c = *cap;
+//	while (c) {
+//		while (c->next && c->next->info.editie != editieCautata) {
+//			c = c->next;
+//		}
+//
+//		if (c->next) {
+//			Nod* temp = c->next;
+//			c->next = temp->next;
+//
+//			if (temp->info.autor) {
+//				free(temp->info.autor);
+//			}
+//			if (temp->info.titlu)
+//				free(temp->info.titlu);
+//			free(temp);
+//		}
+//		else {
+//			c = c->next;
+//		}
+//	}
+//}
+//
+//float calculeazaPretulCartilorUnuiAutor(Nod* cap, const char* numeAutor) {
+//	float tot = 0;
+//	while (cap != NULL)
+//	{
+//		if (strcmp(cap->info.autor, numeAutor) == 0)
+//		{
+//			tot += (cap->info.pret);
+//		}
+//		cap = cap->next;
+//	}
+//	return tot;
+//}
+//
+//int main() {
+//
+//	Nod* cap = NULL;
+//	cap = citireListaCartiDinFisier("carti.txt");
+//	afisareListaCarti(cap);
+//
+//
+//
+//	printf("Pretul medie este: %5.2f\n\n", calculeazaPretMediu(cap));
+//
+//	const char* autorCautat = "Liviu Rebreanu";
+//	printf("Pretul total al cartilor autorului %s este: %5.2f\n\n", autorCautat, calculeazaPretulCartilorUnuiAutor(cap, autorCautat));
+//
+//
+//	printf("Stergere carti din editia 2\n");
+//	stergeCartiDinEditia(&cap, '2');
+//
+//	printf("\nLista dupa stegrea cartilor din editia 2:\n");
+//	afisareListaCarti(cap);
+//
+//	dezalocareListaCarti(&cap);
+//	printf("\nLista dupa dezalocare\n");
+//	afisareListaCarti(cap);
+//
+//	return 0;
+//}
