@@ -130,6 +130,7 @@
     <ClCompile Include="Seminar01.c" />
     <ClCompile Include="Seminar02.c" />
     <ClCompile Include="Seminar03.c" />
+    <ClCompile Include="Seminar05.c" />
     <ClCompile Include="Seminar4.c" />
   </ItemGroup>
   <ItemGroup>
