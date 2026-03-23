@@ -244,3 +244,266 @@
 //	afisareListaMasini(lista);
 //	return 0;
 //}
+
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//
+//
+//struct StructuraZbor {
+//	int id;
+//	int nrPasageri;
+//	float durata;
+//	char* aeroportPlecare;
+//	char* aeroportSosire;
+//	unsigned char status; // 0=la timp, 1=întârziat, 2=anulat
+//};
+//typedef struct StructuraZbor Zbor;
+//
+//typedef struct Nod Nod;
+//struct Nod
+//{
+//	Zbor info;
+//	Nod* next;
+//	Nod* prev;
+//};
+//
+//struct ListaDubla
+//{
+//	Nod* first;
+//	Nod* last;
+//	int nrNoduri;
+//}; typedef struct ListaDubla ListaDubla;
+//
+//Zbor citireZborFisier(FILE* file) {
+//	Zbor z;
+//	char buffer[100];
+//	char sep[3] = ",\n";
+//	fgets(buffer, 100, file);
+//	z.id = atoi(strtok(buffer, sep));
+//	z.nrPasageri = atoi(strtok(NULL, sep));
+//	z.durata = atof(strtok(NULL, sep));
+//	char* aux = strtok(NULL, sep);
+//	z.aeroportPlecare = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(z.aeroportPlecare, strlen(aux) + 1, aux);
+//	aux = strtok(NULL, sep);
+//	z.aeroportSosire = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(z.aeroportSosire, strlen(aux) + 1, aux);
+//	z.status = (strtok(NULL, sep))[0];
+//	return z;
+//}
+//
+//void afisareZbor(Zbor zbor) {
+//	printf("ID: %d\n", zbor.id);
+//	printf("PASAGERI: %d\n", zbor.nrPasageri);
+//	printf("DURATA: %.2f\n", zbor.durata);
+//	printf("PLECARE: %s\n", zbor.aeroportPlecare);
+//	printf("SOSIRE: %s\n", zbor.aeroportSosire);
+//	printf("STATUS: %c\n\n", zbor.status);
+//}
+//
+//void afisareInversaListaZbor(ListaDubla lista) {
+//	Nod* c = lista.first;
+//	while (c != NULL)
+//	{
+//		afisareZbor(c->info);
+//		c = c->next;
+//	}
+//}
+//
+//void afisareListaZbor(ListaDubla lista) {
+//	Nod* c = lista.last;
+//	while (c != NULL)
+//	{
+//		afisareZbor(c->info);
+//		c = c->prev;
+//	}
+//}
+//
+//void adaugaMasinaInLista(ListaDubla* lista, Zbor zborNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = zborNou;
+//	nou->prev = lista->last;
+//	nou->next = NULL;
+//	if (lista->last != NULL)
+//	{
+//		lista->last->next = nou;
+//	}
+//	else
+//	{
+//		lista->first = nou;
+//	}
+//	lista->last = nou;
+//	lista->nrNoduri++;
+//
+//	return lista;
+//}
+//
+//void adaugaLaInceputInLista(ListaDubla* lista, Zbor zborNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = zborNou;
+//	nou->prev = NULL;
+//	nou->next = lista->first;
+//
+//	if (lista->first != NULL)
+//	{
+//		lista->first->prev = nou;
+//	}
+//	else {
+//		lista->last = nou;
+//	}
+//	lista->first = nou;
+//	lista->nrNoduri++;
+//	return lista;
+//}
+//
+//ListaDubla citireLDZborDinFisier(const char* numeFisier) {
+//
+//	FILE* f = fopen(numeFisier, "r");
+//	ListaDubla lista;
+//	lista.first = NULL;
+//	lista.last = NULL;
+//	lista.nrNoduri = 0;
+//
+//	if (!f) {
+//		return lista;
+//	}
+//
+//	while (!feof(f))
+//	{
+//		adaugaLaInceputInLista(&lista, citireZborFisier(f));
+//	}
+//
+//	fclose(f);
+//	return lista;
+//}
+//
+//void dezalocareLDZbor(ListaDubla* lista) {
+//	Nod* c = lista->first;
+//	while (c != NULL)
+//	{
+//		Nod* p = c;
+//		c = c->next;
+//		if (p->info.aeroportPlecare)
+//		{
+//			free(p->info.aeroportPlecare);
+//		}
+//		if (p->info.aeroportSosire)
+//		{
+//			free(p->info.aeroportSosire);
+//		}
+//		free(p);
+//	}
+//	lista->first = NULL;
+//	lista->last = NULL;
+//	lista->nrNoduri = 0;
+//}
+//
+//float calculeazaDurataMedie(ListaDubla lista) {
+//	float sum = 0;
+//	if (lista.first == NULL)
+//	{
+//		return 0;
+//	}
+//	else {
+//		Nod* c = lista.first;
+//		while (c)
+//		{
+//			sum += c->info.durata;
+//			c = c->next;
+//		}
+//	}
+//
+//	return sum / lista.nrNoduri;
+//
+//}
+//
+//void stergeZborDupaID(ListaDubla* lista, int id) {
+//	if (lista->first == NULL)
+//	{
+//		return;
+//	}
+//	Nod* c = lista->first;
+//	while (c != NULL & c->info.id != id)
+//	{
+//		c = c->next;
+//	}
+//	if (c == NULL)
+//	{
+//		return;
+//	}
+//	if (c->prev == NULL)
+//	{
+//		lista->first = c->next;
+//		if (lista->first)
+//		{
+//			lista->first->prev = NULL;
+//		}
+//	}
+//	else {
+//		c->prev->next = c->next;
+//	}
+//	if (c->next != NULL) {
+//		c->next->prev = c->prev;
+//	}
+//	else {
+//		lista->last = c->prev;
+//	}
+//	if (c->info.aeroportPlecare)
+//	{
+//		free(c->info.aeroportPlecare);
+//	}
+//	if (c->info.aeroportSosire)
+//	{
+//		free(c->info.aeroportSosire);
+//	}
+//	free(c);
+//	lista->nrNoduri--;
+//}
+//
+//char* getNumeAeroportPlecareMasinaDurataMare(ListaDubla lista) {
+//	if (lista.first) {
+//		Nod* max = lista.first;
+//		Nod* c = lista.first;
+//		while (c)
+//		{
+//			if (c->info.durata > max->info.durata)
+//			{
+//				max = c;
+//			}
+//			c = c->next;
+//		}
+//		char* aeroport = (char*)malloc(strlen(max->info.aeroportPlecare) + 1);
+//		strcpy_s(aeroport, strlen(max->info.aeroportPlecare) + 1, max->info.aeroportPlecare);
+//		return aeroport;
+//	}
+//	else {
+//		return NULL;
+//	}
+//
+//}
+//
+//int main() {
+//
+//	ListaDubla lista = citireLDZborDinFisier("zbor.txt");
+//	afisareListaZbor(lista);
+//	//afisareInversaListaZbor(lista);
+//
+//	printf("\nDurata medie este de %5.2f\n", calculeazaDurataMedie(lista));
+//	char* aeroport = getNumeAeroportPlecareMasinaDurataMare(lista);
+//	printf("Aeroportul este %s\n ", aeroport);
+//	if (aeroport)
+//	{
+//		free(aeroport);
+//	}
+//	stergeZborDupaID(&lista, 5);
+//	afisareListaZbor(lista);
+//
+//	dezalocareLDZbor(&lista);
+//	printf("\nLista a fost dezalocata\n");
+//	afisareListaZbor(lista);
+//
+//	return 0;
+//}
