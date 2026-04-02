@@ -133,6 +133,7 @@
     <ClCompile Include="Seminar05.c" />
     <ClCompile Include="Seminar07.c" />
     <ClCompile Include="Seminar4.c" />
+    <ClCompile Include="SeminarSaptamana7.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="carti.txt" />
