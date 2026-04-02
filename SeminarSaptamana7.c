@@ -146,7 +146,25 @@
 //}
 //
 //void dezalocareTabelaDeMasini(HashTable* ht) {
-//	//sunt dezalocate toate masinile din tabela de dispersie
+//	if (ht != NULL && ht->vector != NULL) {
+//		for (int i = 0; i < ht->dim; i++) {
+//			Nod* aux = ht->vector[i];
+//			while (aux != NULL) {
+//				if (aux->info.model != NULL) {
+//					free(aux->info.model);
+//				}
+//				if (aux->info.numeSofer != NULL) {
+//					free(aux->info.numeSofer);
+//				}
+//				Nod* deSters = aux;
+//				aux = aux->next;
+//				free(deSters);
+//			}
+//		}
+//		free(ht->vector);
+//		ht->vector = NULL;
+//		ht->dim = 0;
+//	}
 //
 //}
 //
