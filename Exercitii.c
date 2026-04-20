@@ -839,3 +839,272 @@
 //
 //	return 0;
 //}
+
+
+
+
+
+
+
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraPacient {
+//	int id;
+//	int varsta;
+//	float greutate;
+//	char* nume;
+//	char* diagnostic;
+//	unsigned char prioritate;
+//};typedef struct StructuraPacient Pacient;
+//
+//typedef struct Nod Nod;
+//struct Nod {
+//	Pacient info;
+//	Nod* prev;
+//	Nod* next;
+//};
+//
+//typedef struct ListaDubla ListaDubla;
+//struct ListaDubla {
+//	Nod* first;
+//	Nod* last;
+//	int nrNoduri;
+//};
+//
+//Pacient citirePacientDinFisier(FILE* file) {
+//	Pacient p;
+//	char buffer[50];
+//	char sep[4] = ",\n";
+//	fgets(buffer, 50, file);
+//	p.id = atoi(strtok(buffer, sep));
+//	p.varsta = atoi(strtok(NULL, sep));
+//	p.greutate = atof(strtok(NULL, sep));
+//	char* aux;
+//	aux = strtok(NULL, sep);
+//	p.nume = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.nume, aux);
+//	aux = strtok(NULL, sep);
+//	p.diagnostic = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.diagnostic, aux);
+//	p.prioritate = strtok(NULL, sep)[0];
+//	return p;
+//}
+//
+//void afisarePacient(Pacient pacient) {
+//	printf("Id: %d\n", pacient.id);
+//	printf("Varsta: %d\n", pacient.varsta);
+//	printf("Greutate: %.2f\n", pacient.greutate);
+//	printf("Nume: %s\n", pacient.nume);
+//	printf("Diagnostic: %s\n", pacient.diagnostic);
+//	printf("Prioritate: %c\n\n", pacient.prioritate);
+//}
+//
+//void afisareListaPacienti(ListaDubla lista) {
+//	Nod* aux = lista.first;
+//	while (aux) {
+//		afisarePacient(aux->info);
+//		aux = aux->next;
+//	}
+//}
+//
+//void afisareInversaListaPacienti(ListaDubla lista) {
+//	Nod* aux = lista.last;
+//	while (aux) {
+//		afisarePacient(aux->info);
+//		aux = aux->prev;
+//	}
+//}
+//
+//void adaugaPacientInLista(ListaDubla* lista, Pacient pacientNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacientNou;
+//	nou->next = NULL;
+//	nou->prev = lista->last;
+//	if (lista->last) {
+//		lista->last->next = nou;
+//	}
+//	else {
+//		lista->first = nou;
+//	}
+//	lista->last = nou;
+//	lista->nrNoduri++;
+//}
+//
+//void adaugaLaInceputInLista(ListaDubla* lista, Pacient pacientNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacientNou;
+//	nou->prev = NULL;
+//	nou->next = lista->first;
+//	if (lista->first) {
+//		lista->first->prev = nou;
+//	}
+//	else {
+//		lista->last = nou;
+//	}
+//	lista->first = nou;
+//	lista->nrNoduri++;
+//}
+//
+//ListaDubla citireLDPacientiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	ListaDubla lista;
+//	lista.first = NULL;
+//	lista.last = NULL;
+//	lista.nrNoduri = 0;
+//	while (!feof(f)) {
+//		adaugaPacientInLista(&lista, citirePacientDinFisier(f));
+//	}
+//	fclose(f);
+//	return lista;
+//}
+//
+//void dezalocareLDPacienti(ListaDubla* lista) {
+//	Nod* aux = lista->first;
+//	while (aux) {
+//		Nod* temp = aux;
+//		aux = aux->next;
+//		if (temp->info.nume != NULL) {
+//			free(temp->info.nume);
+//		}
+//		if (temp->info.diagnostic != NULL) {
+//			free(temp->info.diagnostic);
+//		}
+//		free(temp);
+//		lista->nrNoduri--;
+//	}
+//	lista->first = NULL;
+//	lista->last = NULL;
+//	lista->nrNoduri = 0;
+//}
+//
+//float calculeazaVarstaMedie(ListaDubla lista) {
+//	if (lista.nrNoduri == 0) {
+//		return 0;
+//	}
+//	else
+//	{
+//		float sum = 0;
+//		while (lista.first) {
+//			sum += lista.first->info.varsta;
+//			lista.first = lista.first->next;
+//		}
+//		return sum / lista.nrNoduri;
+//	}
+//
+//}
+//
+//void stergePacientDupaID(ListaDubla* lista, int id) {
+//	Nod* temp = lista->first;
+//	if (temp == NULL) {
+//		return;
+//	}
+//	while (temp != NULL && temp->info.id != id)
+//	{
+//		temp = temp->next;
+//	}
+//	if (temp->prev == NULL) {
+//		lista->first = temp->next;
+//		lista->first->prev = NULL;
+//	}
+//	else {
+//		if (temp->next != NULL) {
+//			temp->prev->next = temp->next;
+//			temp->next->prev = temp->prev;
+//		}
+//		else {
+//			lista->last = temp->prev;
+//			lista->last->next = NULL;
+//		}
+//	}
+//	if (temp->info.nume != NULL) {
+//		free(temp->info.nume);
+//	}
+//	if (temp->info.diagnostic != NULL) {
+//		free(temp->info.diagnostic);
+//	}
+//	free(temp);
+//	lista->nrNoduri--;
+//}
+//
+//void stergePacientiDupaPrioritate(ListaDubla* lista, char prioritate) {
+//	Nod* temp = lista->first;
+//	if (temp == NULL) {
+//		return;
+//	}
+//
+//	while (temp != NULL) {
+//		if (temp->info.prioritate == prioritate) {
+//			Nod* aux = temp;
+//			temp = temp->next;
+//
+//			if (aux->prev == NULL) {
+//				lista->first = aux->next;
+//				if (lista->first != NULL) {
+//					lista->first->prev = NULL;
+//				}
+//				else {
+//					lista->last = NULL;
+//				}
+//			}
+//			else if (aux->next == NULL) {
+//				lista->last = aux->prev;
+//				if (lista->last != NULL) {
+//					lista->last->next = NULL;
+//				}
+//				else {
+//					lista->first = NULL;
+//				}
+//			}
+//			else {
+//				aux->prev->next = aux->next;
+//				aux->next->prev = aux->prev;
+//			}
+//
+//			if (aux->info.nume) free(aux->info.nume);
+//			if (aux->info.diagnostic) free(aux->info.diagnostic);
+//			free(aux);
+//
+//			lista->nrNoduri--;
+//		}
+//		else {
+//			temp = temp->next;
+//		}
+//	}
+//}
+//
+//char* getNumePacientGreutateMare(ListaDubla lista) {
+//	if (lista.first) {
+//		Nod* max = lista.first;
+//		Nod* aux = lista.first;
+//		while (aux) {
+//			if (aux->info.greutate > max->info.greutate) {
+//				max = aux;
+//			}
+//			aux = aux->next;
+//		}
+//		char* nume = (char*)malloc(sizeof(char) * (strlen(max->info.nume) + 1));
+//		strcpy(nume, max->info.nume);
+//		return nume;
+//	}
+//	return NULL;
+//}
+//
+//int main() {
+//	ListaDubla lista = citireLDPacientiDinFisier("pacienti.txt");
+//	afisareInversaListaPacienti(lista);
+//	printf("Varsta medie a pacientilor din lista este: %5.2f\n\n", calculeazaVarstaMedie(lista));
+//	printf("Pacientul cu cea mai mare greutate este: %s\n\n", getNumePacientGreutateMare(lista));
+//	stergePacientDupaID(&lista, 3);
+//	printf("===========================================\n");
+//	afisareListaPacienti(lista);
+//	stergePacientiDupaPrioritate(&lista, 'C');
+//	printf("===========================================\n");
+//	afisareListaPacienti(lista);
+//	dezalocareLDPacienti(&lista);
+//	printf("Lista dupa dezalocare: \n");
+//	afisareListaPacienti(lista);
+//	return 0;
+//}
