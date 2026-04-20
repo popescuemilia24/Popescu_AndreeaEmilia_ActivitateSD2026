@@ -643,3 +643,199 @@
 //
 //	return 0;
 //}
+
+
+
+
+
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraPacient {
+//	int id;
+//	int varsta;
+//	float greutate;
+//	char* nume;
+//	char* diagnostic;
+//	unsigned char prioritate;
+//};typedef struct StructuraPacient Pacient;
+//
+//typedef struct Nod Nod;
+//struct Nod {
+//	Pacient info;
+//	Nod* next;
+//};
+//
+//Pacient citirePacientDinFisier(FILE* file) {
+//	Pacient p;
+//	char buffer[50];
+//	char sep[4] = ",\n";
+//	fgets(buffer, 50, file);
+//	p.id = atoi(strtok(buffer, sep));
+//	p.varsta = atoi(strtok(NULL, sep));
+//	p.greutate = atof(strtok(NULL, sep));
+//	char* aux;
+//	aux = strtok(NULL, sep);
+//	p.nume = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.nume, aux);
+//	aux = strtok(NULL, sep);
+//	p.diagnostic = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.diagnostic, aux);
+//	p.prioritate = strtok(NULL, sep)[0];
+//	return p;
+//}
+//
+//void afisarePacient(Pacient pacient) {
+//	printf("Id: %d\n", pacient.id);
+//	printf("Varsta: %d\n", pacient.varsta);
+//	printf("Greutate: %.2f\n", pacient.greutate);
+//	printf("Nume: %s\n", pacient.nume);
+//	printf("Diagnostic: %s\n", pacient.diagnostic);
+//	printf("Prioritate: %c\n\n", pacient.prioritate);
+//}
+//
+//void afisareListaPacienti(Nod* cap) {
+//	while (cap) {
+//		afisarePacient(cap->info);
+//		cap = cap->next;
+//	}
+//}
+//
+//void adaugaPacientInLista(Nod** cap, Pacient pacientNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacientNou;
+//	nou->next = NULL;
+//	if (*cap) {
+//		Nod* aux = *cap;
+//		while (aux->next) {
+//			aux = aux->next;
+//		}
+//		aux->next = nou;
+//	}
+//	else {
+//		*cap = nou;
+//	}
+//}
+//
+//void adaugaLaInceputInLista(Nod** cap, Pacient pacientNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacientNou;
+//	nou->next = (*cap);
+//	(*cap) = nou;
+//}
+//
+//Nod* citireListaPacientiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	Nod* lista = NULL;
+//	while (!feof(f)) {
+//		adaugaPacientInLista(&lista, citirePacientDinFisier(f));
+//	}
+//	fclose(f);
+//	return lista;
+//}
+//
+//void dezalocareListaPacienti(Nod** cap) {
+//	while (*cap) {
+//		Nod* temp = *cap;
+//		(*cap) = temp->next;
+//		if (temp->info.nume != NULL) {
+//			free(temp->info.nume);
+//		}
+//		if (temp->info.diagnostic != NULL) {
+//			free(temp->info.diagnostic);
+//		}
+//		free(temp);
+//	}
+//}
+//
+//float calculeazaVarstaMedie(Nod* cap) {
+//	float sum = 0;
+//	int k = 0;
+//	while (cap) {
+//		sum += cap->info.varsta;
+//		k++;
+//		cap = cap->next;
+//	}
+//	if (k != 0) {
+//		return sum / k;
+//	}
+//	else {
+//		return 0;
+//	}
+//}
+//
+//void stergePacientiCuPrioritatea(Nod** cap, char prioritateCautata) {
+//	while ((*cap) != NULL && (*cap)->info.prioritate == prioritateCautata)
+//	{
+//		Nod* aux = (*cap);
+//		(*cap) = aux->next;
+//		if (aux->info.nume) {
+//			free(aux->info.nume);
+//		}
+//		if (aux->info.diagnostic) {
+//			free(aux->info.diagnostic);
+//		}
+//		free(aux);
+//	}
+//	Nod* aux = (*cap);
+//	while (aux) {
+//		while (aux->next != NULL && aux->next->info.prioritate != prioritateCautata) {
+//			aux = aux->next;
+//		}
+//
+//		if (aux->next) {
+//			Nod* temp = aux->next;
+//			aux->next = temp->next;
+//			if (temp->info.nume) {
+//				free(temp->info.nume);
+//			}
+//			if (temp->info.diagnostic) {
+//				free(temp->info.diagnostic);
+//			}
+//			free(temp);
+//		}
+//		else {
+//			aux = aux->next;
+//		}
+//	}
+//}
+//
+//float calculeazaGreutateaMedieDupaDiagnostic(Nod* cap, const char* diagnostic) {
+//	float total = 0;
+//	int k = 0;
+//	while (cap) {
+//		if (strcmp(cap->info.diagnostic, diagnostic) == 0) {
+//			total += cap->info.greutate;
+//			k++;
+//		}
+//		cap = cap->next;
+//	}
+//	if (k != 0) {
+//		return total / k;
+//	}
+//	else {
+//		return 0;
+//	}
+//}
+//
+//int main() {
+//	Nod* lista = citireListaPacientiDinFisier("pacienti.txt");
+//	afisareListaPacienti(lista);
+//
+//	printf("Varsta medie a pacientilor este: %.2f\n", calculeazaVarstaMedie(lista));
+//
+//	const char* diagnostic = "Astm";
+//	printf("Greutatea medie a pacientilor cu %s este: %.2f kg.\n", diagnostic, calculeazaGreutateaMedieDupaDiagnostic(lista, diagnostic));
+//
+//	printf("Stergere pacienti cu prioritete C:\n");
+//	stergePacientiCuPrioritatea(&lista, 'C');
+//	afisareListaPacienti(lista);
+//
+//	dezalocareListaPacienti(&lista);
+//	printf("Afisare lista dupa dezalocare:\n");
+//	afisareListaPacienti(lista);
+//
+//	return 0;
+//}
