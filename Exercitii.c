@@ -1333,3 +1333,255 @@
 //
 //	return 0;
 //}
+
+
+#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//
+//struct StructuraMasina {
+//	int id;
+//	int nrUsi;
+//	float pret;
+//	char* model;
+//	char* numeSofer;
+//	unsigned char serie;
+//};
+//typedef struct StructuraMasina Masina;
+//
+//struct HashTable {
+//	int dim;
+//	Masina* table;
+//};
+//typedef struct HashTable HashTable;
+//
+//Masina citireMasinaDinFisier(FILE* file) {
+//	char buffer[100];
+//	char sep[3] = ",\n";
+//	fgets(buffer, 100, file);
+//	char* aux;
+//	Masina m1;
+//	aux = strtok(buffer, sep);
+//	m1.id = atoi(aux);
+//	m1.nrUsi = atoi(strtok(NULL, sep));
+//	m1.pret = atof(strtok(NULL, sep));
+//	aux = strtok(NULL, sep);
+//	m1.model = malloc(strlen(aux) + 1);
+//	strcpy_s(m1.model, strlen(aux) + 1, aux);
+//
+//	aux = strtok(NULL, sep);
+//	m1.numeSofer = malloc(strlen(aux) + 1);
+//	strcpy_s(m1.numeSofer, strlen(aux) + 1, aux);
+//
+//	m1.serie = *strtok(NULL, sep);
+//	return m1;
+//}
+//
+//void afisareMasina(Masina masina) {
+//	printf("Id: %d\n", masina.id);
+//	printf("Nr. usi : %d\n", masina.nrUsi);
+//	printf("Pret: %.2f\n", masina.pret);
+//	printf("Model: %s\n", masina.model);
+//	printf("Nume sofer: %s\n", masina.numeSofer);
+//	printf("Serie: %c\n\n", masina.serie);
+//}
+//
+//HashTable initializareHashTable(int dimensiune) {
+//	HashTable ht;
+//	ht.dim = dimensiune;
+//	ht.table = (Masina*)malloc(sizeof(Masina) * dimensiune);
+//	for (int i = 0;i < ht.dim;i++) {
+//		ht.table[i].id = -1;
+//		ht.table[i].numeSofer = NULL;
+//		ht.table[i].model = NULL;
+//	}
+//	return ht;
+//}
+//
+//int calculeazaHash(const char* nume, int dimensiune) {
+//	int sum = 0;
+//	for (int i = 0;i < strlen(nume);i++) {
+//		sum += nume[i];
+//	}
+//	return sum % dimensiune;
+//}
+//void inserareMasinaInTabela(HashTable* ht, Masina masina);
+//
+//HashTable Redimensionare(HashTable ht) {
+//	int dimNoua = ht.dim + (ht.dim / 2) + 1;
+//	HashTable hash = initializareHashTable(dimNoua);
+//	for (int i = 0;i < ht.dim;i++) {
+//		if (ht.table[i].id != -1) {
+//			inserareMasinaInTabela(&hash, ht.table[i]);
+//		}
+//	}
+//	free(ht.table);
+//	return hash;
+//}
+//
+//void inserareMasinaInTabela(HashTable* ht, Masina masina) {
+//	if (masina.id == -1) return-1;
+//	
+//	int ocupate = 0;
+//	for (int i = 0; i < ht->dim; i++) {
+//		if (ht->table[i].id != -1) ocupate++;
+//	}
+//	if (ocupate >= ht->dim - 1) {
+//		*ht = Redimensionare(*ht);
+//	}
+//
+//	int poz = calculeazaHash(masina.numeSofer, ht->dim);
+//	int i = 0;
+//	while (ht->table[(poz + i) % ht->dim].id != -1) {
+//		i++;
+//	}
+//
+//	ht->table[(poz + i) % ht->dim] = masina;
+//}
+//
+//HashTable citireMasiniDinFisier(const char* numeFisier, int dimensiune) {
+//	FILE* f = fopen(numeFisier, "r");
+//	HashTable ht = initializareHashTable(dimensiune);
+//	while (!feof(f)) {
+//		inserareMasinaInTabela(&ht, citireMasinaDinFisier(f));
+//	}
+//	fclose(f);
+//	return ht;
+//}
+//
+//void afisareTabelaDeMasini(HashTable ht) {
+//	printf("\n Continut tabela de dispersie (dimensiune %d):\n", ht.dim);
+//	for (int i = 0;i < ht.dim;i++) {
+//		if (ht.table[i].id != -1) {
+//			printf("Pozitie %d:\n", i );
+//			afisareMasina(ht.table[i]);
+//			printf("--------------------------------------------\n");
+//		}
+//		else {
+//			printf("Pe pozitia %d nu exista masina.\n", i);
+//			printf("--------------------------------------------\n");
+//		}
+//	}
+//}
+//
+//void dezalocareTabelaDeMasini(HashTable *ht) {
+//	if (ht && ht->table) {
+//		for (int i = 0;i < ht->dim;i++) {
+//			if (ht->table[i].id != -1) {
+//				if (ht->table[i].numeSofer != NULL) {
+//					free(ht->table[i].numeSofer);
+//				}
+//				if (ht->table[i].model != NULL) {
+//					free(ht->table[i].model);
+//				}
+//			}
+//		}
+//		free(ht->table);
+//		ht->table = NULL;
+//		ht->dim = 0;
+//	}
+//}
+//
+//float* calculeazaPreturiMediiPerClustere(HashTable ht, int* nrClustere) {
+//	if (ht.table == NULL || ht.dim < 0) {
+//		(*nrClustere) = 0;
+//		return NULL;
+//	}
+//	int count = 0;
+//	int i = 0;
+//	while (i < ht.dim) {
+//		if (ht.table[i].id != -1) {
+//			count++;
+//			while (i < ht.dim && ht.table[i].id != -1) {
+//				i++;
+//			}
+//		}
+//		else {
+//			i++;
+//		}
+//	}
+//
+//	if (count == 0) {
+//		(*nrClustere) = 0;
+//		return NULL;
+//	}
+//
+//	(*nrClustere) = count;
+//	float* preturi = (float*)malloc(sizeof(float) * (*nrClustere));
+//	int poz = 0;
+//	i = 0;
+//	while (i < ht.dim) {
+//		if (ht.table[i].id != -1) {
+//			float sum = 0;
+//			int k = 0;
+//			while (i < ht.dim && ht.table[i].id != -1) {
+//				sum += ht.table[i].pret;
+//				k++;
+//				i++;
+//			}
+//			preturi[poz++] = sum / k;
+//		}
+//		else {
+//			i++;
+//		}
+//	}
+//
+//	return preturi;
+//}
+//
+//Masina getMasinaDupaCheie(HashTable ht, const char* nume) {
+//	Masina m;
+//	m.id = -1;
+//	int poz = calculeazaHash(nume, ht.dim);
+//	int i = 0;
+//	while (i < ht.dim) {
+//		int index = (poz + i) % ht.dim;
+//		if (ht.table[index].id == -1) {
+//			break;
+//		}
+//		if (strcmp(ht.table[index].numeSofer, nume) == 0) {
+//			m = ht.table[index];
+//			m.model = malloc(strlen(ht.table[index].model) + 1);
+//			strcpy(m.model, ht.table[index].model);
+//
+//			m.numeSofer = malloc(strlen(ht.table[index].numeSofer) + 1);
+//			strcpy(m.numeSofer, ht.table[index].numeSofer);
+//			return m;
+//		}
+//		i++;
+//	}
+//	
+//	return m;
+//}
+//
+//int main() {
+//	int dim = 5;
+//	HashTable ht = citireMasiniDinFisier("masini.txt", dim);
+//
+//	afisareTabelaDeMasini(ht);
+//	int nrClustere = 0;
+//	float* preturi = calculeazaPreturiMediiPerClustere(ht, &nrClustere);
+//	printf("S-au gasit %d clustere.\n", nrClustere);
+//	for (int i = 0; i < nrClustere; i++) {
+//		printf("Media preturilor clusterului %d: %.2f\n", i + 1, preturi[i]);
+//	}
+//	free(preturi);
+//	char* nume = "Badescu";
+//	printf("\nCautare sofer %s:\n", nume);
+//	Masina cautata = getMasinaDupaCheie(ht, nume);
+//	if (cautata.id != -1) {
+//		afisareMasina(cautata);
+//		free(cautata.model);
+//		free(cautata.numeSofer);
+//	}
+//	else {
+//		printf("Nu s-a gasit masina.\n");
+//	}
+//	dezalocareTabelaDeMasini(&ht);
+//	printf("Tabela dupa dezalocare:\n");
+//	afisareTabelaDeMasini(ht);
+//
+//	return 0;
+//}
