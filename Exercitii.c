@@ -1108,3 +1108,228 @@
 //	afisareListaPacienti(lista);
 //	return 0;
 //}
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraPacient {
+//	int id;
+//	int varsta;
+//	float greutate;
+//	char* nume;
+//	char* diagnostic;
+//	unsigned char prioritate;
+//};typedef struct StructuraPacient Pacient;
+//
+//typedef struct Nod Nod;
+//struct Nod{
+//	Pacient info;
+//	Nod* next;
+//};
+//
+//struct HashTable {
+//	int dim;
+//	Nod** table;
+//};
+//typedef struct HashTable HashTable;
+//
+//Pacient citirePacientDinFisier(FILE* file) {
+//	Pacient p;
+//	char buffer[50];
+//	char sep[4] = ",\n";
+//	fgets(buffer, 50, file);
+//	p.id = atoi(strtok(buffer, sep));
+//	p.varsta = atoi(strtok(NULL, sep));
+//	p.greutate = atof(strtok(NULL, sep));
+//	char* aux;
+//	aux = strtok(NULL, sep);
+//	p.nume = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.nume, aux);
+//	aux = strtok(NULL, sep);
+//	p.diagnostic = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.diagnostic, aux);
+//	p.prioritate = strtok(NULL, sep)[0];
+//	return p;
+//}
+//
+//void afisarePacient(Pacient pacient) {
+//	printf("Id: %d\n", pacient.id);
+//	printf("Varsta: %d\n", pacient.varsta);
+//	printf("Greutate: %.2f\n", pacient.greutate);
+//	printf("Nume: %s\n", pacient.nume);
+//	printf("Diagnostic: %s\n", pacient.diagnostic);
+//	printf("Prioritate: %c\n\n", pacient.prioritate);
+//}
+//
+//void afisareListaPacienti(Nod* cap) {
+//	while (cap) {
+//		afisarePacient(cap->info);
+//		cap = cap->next;
+//	}
+//}
+//
+//void adaugaPacientInLista(Nod** cap, Pacient pacientNou) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacientNou;
+//	nou->next = NULL;
+//	if (*cap) {
+//		Nod* aux = (*cap);
+//		while (aux->next) {
+//			aux = aux->next;
+//		}
+//		aux->next = nou;
+//	}
+//	else {
+//		(*cap) = nou;
+//	}
+//}
+//
+//
+//HashTable initializareHashTable(int dimensiune) {
+//	HashTable ht;
+//	ht.dim = dimensiune;
+//	ht.table = (Nod**)malloc(sizeof(Nod*) * dimensiune);
+//	for (int i = 0; i < ht.dim;i++) {
+//		ht.table[i] = NULL;
+//	}
+//	return ht;
+//}
+//
+//int calculeazaHash(const char* nume, int dimensiune) {
+//	int sum = 0;
+//	for (int i = 0;i < strlen(nume);i++) {
+//		sum += nume[i];
+//	}
+//	return sum % dimensiune;
+//}
+//
+//void inserarePacientInTabela(HashTable hash, Pacient pacientNou) {
+//	int poz = calculeazaHash(pacientNou.nume, hash.dim);
+//	adaugaPacientInLista(&hash.table[poz], pacientNou);
+//}
+//
+//HashTable citirePacientiDinFisier(const char* numeFisier, int dimensiune) {
+//	FILE* f = fopen(numeFisier, "r");
+//	HashTable ht = initializareHashTable(dimensiune);
+//	while (!feof(f)) {
+//		inserarePacientInTabela(ht, citirePacientDinFisier(f));
+//	}
+//	fclose(f);
+//	return ht;
+//}
+//
+//void afisareTabelaDePacienti(HashTable ht) {
+//	for(int i = 0;i < ht.dim;i++) {
+//		if (ht.table[i] != 0) {
+//			printf("In clusterul %d se afla urmatorii pacienti: \n", i + 1);
+//			afisareListaPacienti(ht.table[i]);
+//			printf("=========================================================\n");
+//		}
+//		else {
+//			printf("In clusterul %d nu sunt pacienti: \n", i + 1);
+//			printf("=========================================================\n");
+//		}
+//	}
+//}
+//
+//void dezalocareTabelaDePacienti(HashTable *ht) {
+//	if(ht!=NULL)
+//	{
+//		for (int i = 0;i < (*ht).dim; i++) {
+//			if ((*ht).table[i] != NULL) {
+//				Nod* aux = (*ht).table[i];
+//				while (aux) {
+//					Nod* temp = aux;
+//					aux = aux->next;
+//					if (temp->info.nume != NULL) {
+//						free(temp->info.nume);
+//					}
+//					if (temp->info.diagnostic != NULL) {
+//						free(temp->info.diagnostic);
+//					}
+//					free(temp);
+//					
+//				}
+//			}
+//		}
+//	}
+//	free(ht->table);
+//	ht->dim = 0;
+//	ht->table = NULL;
+//}
+//
+//float* calculeazaVarsteMediiPerClustere(HashTable ht, int* nrClustere) {
+//	if (ht.table == NULL) {
+//		return NULL;
+//	}
+//	else {
+//		for (int i = 0;i < ht.dim;i++) {
+//			if(ht.table[i]!=NULL) (*nrClustere)++;
+//		}
+//		float* varsta = (float*)malloc(sizeof(float) * (*nrClustere));
+//		int poz = 0;
+//		for (int i = 0;i < ht.dim;i++) {
+//			if (ht.table[i] != NULL) {
+//				float sum = 0;
+//				int k = 0;
+//				Nod* aux = ht.table[i];
+//				while (aux) {
+//					sum += aux->info.varsta;
+//					aux = aux->next;
+//					k++;
+//				}
+//				varsta[poz++] = sum / k;
+//			}
+//		}
+//		return varsta;
+//	}
+//}
+//
+//Pacient getPacientDupaCheie(HashTable ht, const char* nume) {
+//	Pacient p;
+//	p.id = -1;
+//	int poz = calculeazaHash(nume, ht.dim);
+//	if (poz >= 0 && poz < ht.dim) {
+//		Nod* aux = ht.table[poz];
+//		while (aux) {
+//			if (strcmp(aux->info.nume, nume) == 0) {
+//				p = aux->info;
+//				p.nume = (char*)malloc(sizeof(char) * (strlen(aux->info.nume) + 1));
+//				strcpy(p.nume, aux->info.nume);
+//				p.diagnostic = (char*)malloc(sizeof(char) * (strlen(aux->info.diagnostic) + 1));
+//				strcpy(p.diagnostic, aux->info.diagnostic);
+//				break;
+//			}
+//			aux = aux->next;
+//		}
+//	}
+//	return p;
+//}
+//
+//int main() {
+//	int dim = 5;
+//	HashTable ht = citirePacientiDinFisier("pacienti.txt", dim);
+//	afisareTabelaDePacienti(ht);
+//
+//	int nrClustere = 0;
+//	float* varsta = calculeazaVarsteMediiPerClustere(ht, &nrClustere);
+//
+//	printf("Varstele medii per clastere sunt:\n");
+//	for (int i = 0; i < nrClustere;i++) {
+//		printf("-> %5.2f \n", varsta[i]);
+//	}
+//	printf("\n");
+//	char* nume = "Radu Gheorghe";
+//	printf("Pacientul %s este:\n", nume);
+//	afisarePacient(getPacientDupaCheie(ht, nume));
+//
+//	dezalocareTabelaDePacienti(&ht);
+//	printf("Tabela de pacienti dupa dezalocare: \n");
+//	afisareTabelaDePacienti(ht);
+//
+//	return 0;
+//}
