@@ -1585,3 +1585,265 @@
 //
 //	return 0;
 //}
+
+
+//stiva -> LIFO -> LSI
+////coada -> FIFO -> LDI
+//
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraPacient {
+//	int id;
+//	int varsta;
+//	float greutate;
+//	char* nume;
+//	char* diagnostic;
+//	unsigned char prioritate;
+//};typedef struct StructuraPacient Pacient;
+//
+//Pacient citirePacientDinFisier(FILE* file) {
+//	Pacient p;
+//	char buffer[50];
+//	char sep[4] = ",\n";
+//	fgets(buffer, 50, file);
+//	p.id = atoi(strtok(buffer, sep));
+//	p.varsta = atoi(strtok(NULL, sep));
+//	p.greutate = atof(strtok(NULL, sep));
+//	char* aux;
+//	aux = strtok(NULL, sep);
+//	p.nume = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.nume, aux);
+//	aux = strtok(NULL, sep);
+//	p.diagnostic = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy(p.diagnostic, aux);
+//	p.prioritate = strtok(NULL, sep)[0];
+//	return p;
+//}
+//
+//void afisarePacient(Pacient pacient) {
+//	printf("Id: %d\n", pacient.id);
+//	printf("Varsta: %d\n", pacient.varsta);
+//	printf("Greutate: %.2f\n", pacient.greutate);
+//	printf("Nume: %s\n", pacient.nume);
+//	printf("Diagnostic: %s\n", pacient.diagnostic);
+//	printf("Prioritate: %c\n\n", pacient.prioritate);
+//}
+//
+////STACK
+//
+//typedef struct Nod Nod;
+//struct Nod {
+//	Pacient info;
+//	Nod* next;
+//};
+//
+//void pushStack(Nod** cap, Pacient pacient) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = pacient;
+//	nou->next = (*cap);
+//	(*cap) = nou;
+//}
+//
+//Pacient popStack(Nod** cap) {
+//	Pacient p;
+//	p.id = -1;
+//	if (cap != NULL && (*cap) != NULL) {
+//		
+//		Nod* aux = (*cap);
+//		p = aux->info;
+//		(*cap) = aux->next;
+//		free(aux);
+//		
+//	}
+//	return p;
+//}
+//
+//int emptyStack(Nod* cap) {
+//	if (cap == NULL) {
+//		return 1;
+//	}
+//	else { 
+//		return 0;
+//	}
+//}
+//
+//Nod* citireStackPacientiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	Nod* lista = NULL;
+//	while (!feof(f)) {
+//		pushStack(&lista, citirePacientDinFisier(f));
+//	}
+//	fclose(f);
+//	return lista;
+//}
+//
+//void dezalocareStivaDePacienti(Nod** cap) {
+//	while (*cap != NULL) {
+//		Pacient p = popStack(cap);
+//		if(p.nume)  free(p.nume);
+//		if(p.diagnostic) free(p.diagnostic);
+//	}
+//}
+//
+//int size(Nod* cap) {
+//	int k = 0;
+//	while (cap) {
+//		k++;
+//		cap = cap->next;
+//	}
+//	return k;
+//}
+//
+////QUEUE
+//
+//typedef struct NOD NOD;
+//struct NOD {
+//	Pacient info;
+//	NOD* next;
+//	NOD* prev;
+//};
+//typedef struct ListaDubla ListaDubla;
+//struct ListaDubla {
+//	NOD* last;
+//	NOD* first;
+//};
+//
+////adaug la inceput
+//void enqueue(ListaDubla* lista, Pacient pacient) {
+//	NOD* nou = (NOD*)malloc(sizeof(NOD));
+//	nou->info = pacient;
+//	nou->next = lista->first;
+//	nou->prev = NULL;
+//	if (lista->first != NULL) {
+//		lista->first->prev = nou;
+//	}
+//	else {
+//		lista->last = nou;
+//	}
+//	lista->first = nou;
+//}
+//
+//Pacient dequeue(ListaDubla* lista) {
+//	Pacient p;
+//	p.id = -1;
+//	if (lista->last != NULL) {
+//		p = lista->last->info;
+//		lista->last = lista->last->prev;
+//		if (lista->last != NULL) {
+//			free(lista->last->next);
+//			lista->last->next = NULL;
+//		}
+//		else {
+//			free(lista->first);
+//			lista->first = NULL;
+//		}
+//	}
+//	return p;
+//}
+//
+//ListaDubla citireCoadaDePacientiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	ListaDubla lista;
+//	lista.first = NULL;
+//	lista.last = NULL;
+//	while (!feof(f)) {
+//		enqueue(&lista, citirePacientDinFisier(f));
+//	}
+//	fclose(f);
+//	return lista;
+//}
+//
+//void dezalocareCoadaDePacienti(ListaDubla* lista) {
+//	if (lista == NULL)return;
+//	while (lista->first != NULL)
+//	{
+//		Pacient p = dequeue(lista);
+//		free(p.nume);
+//		free(p.diagnostic);
+//	}
+//	lista->first = NULL;
+//	lista->last = NULL;
+//}
+//
+//
+//
+//Pacient getPacientByID(Nod** cap, int id) {
+//	Pacient pacient;
+//	pacient.id = -1;
+//	Pacient p;
+//	Nod* stiva = NULL;
+//	while ((*cap) && (*cap)->info.id != id) {
+//		pushStack(&stiva, popStack(cap));
+//	}
+//	if (*cap != NULL) {
+//		p = popStack(cap);
+//		pacient = p;
+//		pacient.nume = (char*)malloc(sizeof(char) * (strlen(p.nume) + 1));
+//		strcpy(pacient.nume, p.nume);
+//		pacient.diagnostic = (char*)malloc(sizeof(char) * (strlen(p.diagnostic) + 1));
+//		strcpy(pacient.diagnostic, p.diagnostic);
+//		pushStack(&stiva, p);
+//	}
+//	while (stiva != NULL) {
+//		pushStack(cap, popStack(&stiva));
+//	}
+//	return pacient;
+//}
+//
+//float calculeazaGreutateTotala(ListaDubla lista) {
+//	if (lista.first == NULL) {
+//		return 0;
+//	}
+//	else {
+//		float total = 0;
+//		NOD* aux = lista.first;
+//		while (aux) {
+//			total += aux->info.greutate;
+//			aux = aux->next;
+//		}
+//		return total;
+//	}
+//}
+//
+//int main() {
+//	Nod* stiva = citireStackPacientiDinFisier("pacienti.txt");
+//	if (emptyStack(stiva)) {
+//		printf("Stiva este goala.\n");
+//	}
+//	else {
+//		printf("Stiva nu este goala.\n");
+//	}
+//	printf("Size stiva: %d.\n", size(stiva));
+//
+//	
+//	printf("\nPacientul cu id 3:\n");
+//	afisarePacient(getPacientByID(&stiva, 3));
+//	printf("------------------------------------------\n");
+//
+//	afisarePacient(popStack(&stiva));
+//	afisarePacient(popStack(&stiva));
+//
+//	dezalocareStivaDePacienti(&stiva);
+//	if (emptyStack(stiva)) {
+//		printf("Stiva este goala.\n");
+//	}
+//	else {
+//		printf("Stiva nu este goala.\n");
+//	}
+//
+//
+//	printf("=====================================================================\n");
+//	ListaDubla coada = citireCoadaDePacientiDinFisier("pacienti.txt");
+//	printf("Coada:\n");
+//	printf("\nGreutatea totala a pacientilor este: %5.2f\n", calculeazaGreutateTotala(coada));
+//	afisarePacient(dequeue(&coada));
+//	afisarePacient(dequeue(&coada));
+//	
+//	dezalocareCoadaDePacienti(&coada);
+//	
+//
+//	return 0;
+//}
