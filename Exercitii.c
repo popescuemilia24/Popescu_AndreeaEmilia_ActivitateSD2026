@@ -1847,3 +1847,190 @@
 //
 //	return 0;
 //}
+
+
+#define _CRT_SECURE_NO_WARNINGS
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <string.h>
+//
+//struct StructuraFilm {
+//    int id;
+//    int durataMinute;
+//    float rating;
+//    char* titlu;
+//    char* regizor;
+//    unsigned char gen;
+//};typedef struct StructuraFilm Film;
+//
+//typedef struct Nod Nod;
+//struct Nod {
+//    Film info;
+//    Nod* next;
+//};
+//
+//Film citireFilmDinFisier(FILE* file) {
+//    char buffer[100];
+//    char sep[3] = ",\n";
+//    fgets(buffer, 100, file);
+//    Film f;
+//    f.id = atoi(strtok(buffer, sep));
+//    f.durataMinute = atoi(strtok(NULL, sep));
+//    f.rating = atof(strtok(NULL, sep));
+//    char* aux;
+//    aux = strtok(NULL, sep);
+//    f.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//    strcpy_s(f.titlu, (strlen(aux) + 1), aux);
+//    aux = strtok(NULL, sep);
+//    f.regizor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//    strcpy_s(f.regizor, (strlen(aux) + 1), aux);
+//    f.gen = strtok(NULL, sep)[0];
+//    return f;
+//}
+//
+//void afisareFilm(Film f) {
+//    printf("ID: %d\n", f.id);
+//    printf("Durata (minute): %d\n", f.durataMinute);
+//    printf("Rating: %5.2f\n", f.rating);
+//    printf("Titlu: %s\n", f.titlu);
+//    printf("Regizor: %s\n", f.regizor);
+//    printf("Gen: %c\n\n", f.gen);
+//}
+//
+//void afisareListaFilme(Nod* cap) {
+//    while (cap) {
+//        afisareFilm(cap->info);
+//        cap = cap->next;
+//    }
+//}
+//
+//void adaugaFilmInLista(Nod** cap, Film f) {
+//    Nod* nou = (Nod*)malloc(sizeof(Nod));
+//    nou->info = f;
+//    nou->next = NULL;
+//    if ((*cap) == NULL) {
+//        (*cap) = nou;
+//    }
+//    else {
+//        Nod* aux = *cap;
+//        while (aux->next != NULL) {
+//            aux = aux->next;
+//        }
+//        aux->next = nou;
+//    } 
+//}
+//
+//Nod* citireListaFilmeDinFisier(const char* numeFisier) {
+//    FILE* f = fopen(numeFisier, "r");
+//    Nod* lista =NULL;
+//    while (!feof(f)) {
+//        adaugaFilmInLista(&lista, citireFilmDinFisier(f));
+//    }
+//    fclose(f);
+//    return lista;
+//}
+//
+//void dezalocareListaFilme(Nod** cap) {
+//    while ((*cap)!=NULL) {
+//        Nod* temp = (*cap);
+//        (*cap) = (*cap)->next;
+//        if (temp->info.titlu != NULL) {
+//            free(temp->info.titlu);
+//        }
+//        if (temp->info.regizor != NULL) {
+//            free(temp->info.regizor);
+//        }
+//        free(temp);
+//    }
+//}
+//
+//float calculeazaRatingMediu(Nod* cap) {
+//    if (cap == NULL) {
+//        return 0;
+//    }
+//    else {
+//        float sum = 0;
+//        int k = 0;
+//        while (cap) {
+//            sum += cap->info.rating;
+//            k++;
+//            cap = cap->next;
+//        }
+//        if (k != 0) {
+//            return sum / k;
+//        }
+//        else {
+//            return 0;
+//        }
+//    }
+//}
+//
+//
+//float calculeazaDurataMedieDupaGen(Nod* cap, const char gen) {
+//    if (cap == NULL) {
+//        return 0;
+//    }
+//    else {
+//        float sum = 0;
+//        int k = 0;
+//        while (cap) {
+//            if (cap->info.gen == gen) {
+//                sum += cap->info.durataMinute;
+//                k++;
+//            }
+//            cap = cap->next;
+//        }
+//        if (k != 0) {
+//            return sum / k;
+//        }
+//        else {
+//            return 0;
+//        }
+//    }
+//}
+//
+//void stergeFilmCuID(Nod** cap, int id) {
+//    if (*cap == NULL) {
+//        return;
+//    }
+//    else {
+//        Nod* temp = *cap;
+//        if (temp->info.id == id) {
+//            (*cap) = (*cap)->next;
+//        }
+//        else {
+//            Nod* aux = temp;
+//            while (temp->next != NULL && temp->info.id != id) {
+//                aux = temp;
+//                temp = temp->next;
+//            }
+//            aux->next = temp->next;
+//        }
+//        if (temp->info.titlu != NULL) {
+//            free(temp->info.titlu);
+//        }
+//        if (temp->info.regizor != NULL) {
+//            free(temp->info.regizor);
+//        }
+//        free(temp);
+//    }
+//}
+//
+//int main() {
+//
+//    Nod* lista = citireListaFilmeDinFisier("filme.txt");
+//    afisareListaFilme(lista);
+//    printf("===================================================\n");
+//    printf("Ratingul mediu este: %5.2f\n", calculeazaRatingMediu(lista));
+//    printf("Durata medie a filmelor de actiune este: %5.2f\n", calculeazaDurataMedieDupaGen(lista, 'A'));
+//    printf("===================================================\n");
+//    printf("Stergere film cu id 4:\n");
+//    stergeFilmCuID(&lista, 4);
+//    afisareListaFilme(lista);
+//    printf("===================================================\n");
+//    dezalocareListaFilme(&lista);
+//    printf("Lista dupa dezalocare:\n");
+//    afisareListaFilme(lista);
+//
+//    return 0;
+//}

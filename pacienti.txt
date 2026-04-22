@@ -1,0 +1,10 @@
+1,45,72.5,Popescu Ion,Diabet,A
+2,30,65.2,Ionescu Maria,Astm,B
+3,60,80.0,Georgescu Vasile,Hipertensiune,A
+4,25,55.3,Popa Ana,Anemie,C
+5,50,90.7,Dumitrescu Mihai,Obezitate,B
+6,40,68.9,Stan Elena,Astm,C
+7,70,77.4,Radu Gheorghe,Astm,A
+8,35,62.1,Marin Alina,Alergie,B
+9,28,58.6,Tudor Andrei,Raceala,C
+10,55,85.0,Petrescu Daniela,Bronsita,B

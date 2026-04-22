@@ -47,5 +47,7 @@
     <Text Include="masini.txt" />
     <Text Include="carti.txt" />
     <Text Include="zbor.txt" />
+    <Text Include="filme.txt" />
+    <Text Include="pacienti.txt" />
   </ItemGroup>
 </Project>

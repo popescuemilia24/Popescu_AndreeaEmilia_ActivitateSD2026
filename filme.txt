@@ -1,0 +1,10 @@
+1,142,8.7,Inception,Christopher Nolan,A
+2,175,9.2,The Godfather,Francis Ford Coppola,D
+3,136,8.9,Pulp Fiction,Quentin Tarantino,C
+4,195,9.0,The Lord of the Rings: The Return of the King,Peter Jackson,F
+5,148,8.8,The Dark Knight,Christopher Nolan,A
+6,154,8.6,Fight Club,David Fincher,D
+7,169,8.7,Interstellar,Christopher Nolan,S
+8,121,8.5,The Matrix,Lana Wachowski,S
+9,130,7.9,Avatar,James Cameron,F
+10,117,8.3,Gladiator,Ridley Scott,A
