@@ -2319,3 +2319,223 @@
 //
 //    return 0;
 //}
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraCarte {
+//	int id;
+//	int nrPagini;
+//	float pret;
+//	char* titlu;
+//	char* autor;
+//	unsigned char editie;
+//};
+//typedef struct StructuraCarte Carte;
+//
+//typedef struct Nod Nod;
+//struct Nod {
+//	Carte info;
+//	Nod* next;
+//};
+//
+//struct HashTable {
+//	int dim;
+//	Nod** tabel;
+//};
+//typedef struct HashTable HashTable;
+//
+//Carte citireCarteFisier(FILE* file) {
+//	Carte c;
+//	char buffer[100];
+//	if (fgets(buffer, 100, file) == NULL)
+//	{
+//		c.titlu = NULL;
+//		c.autor = NULL;
+//		return c;
+//	}
+//	char var[3] = ",\n";
+//	c.id = atoi(strtok(buffer, var));
+//	c.nrPagini = atoi(strtok(NULL, var));
+//	c.pret = atof(strtok(NULL, var));
+//	char* aux = strtok(NULL, var);
+//	c.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.titlu, strlen(aux) + 1, aux);
+//	aux = strtok(NULL, var);
+//	c.autor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.autor, strlen(aux) + 1, aux);
+//	c.editie = (strtok(NULL, var))[0];
+//	return c;
+//
+//}
+//
+//void afisareCarte(Carte carte) {
+//	printf("\nID: %d\n", carte.id);
+//	printf("Numarr pagini: %d\n", carte.nrPagini);
+//	printf("Pret: %.2f\n", carte.pret);
+//	printf("Titlu: %s\n", carte.titlu);
+//	printf("Autor: %s\n", carte.autor);
+//	printf("Editie: %c\n\n", carte.editie);
+//}
+//
+//void afisareListCarti(Nod* cap) {
+//	while (cap) {
+//		afisareCarte(cap->info);
+//		cap = cap->next;
+//	}
+//}
+//
+//void adaugaCarteInLista(Nod** cap, Carte c) {
+//	Nod* nou = (Nod*)malloc(sizeof(Nod));
+//	nou->info = c;
+//	nou->next = NULL;
+//	if (*cap == NULL) {
+//		(*cap) = nou;
+//	}
+//	else {
+//		Nod* aux = (*cap);
+//		while (aux->next != NULL) {
+//			aux = aux->next;
+//		}
+//		aux->next = nou;
+//	}
+//}
+//
+//
+//HashTable initializareHashTable(int dimensiune) {
+//	HashTable ht;
+//	ht.dim = dimensiune;
+//	ht.tabel = (Nod**)malloc(sizeof(Nod*) * dimensiune);
+//	for (int i = 0;i < dimensiune;i++) {
+//		ht.tabel[i] = NULL;
+//	}
+//	return ht;
+//}
+//
+////int calculeazaHash(const char* titlu, int dimensiune) {
+////	int sum = 0;
+////	for (int i = 0; i < strlen(titlu);i++) {
+////		sum += titlu[i];
+////	}
+////	return sum % dimensiune;
+////}
+//
+//int calculeazaHash(int id, int dimensiune) {
+//	id = id * 23 + 123;
+//	return id % dimensiune;
+//}
+//
+//
+//void inserareCarteInTabela(HashTable hash, Carte c) {
+//	int poz = calculeazaHash(c.id, hash.dim);
+//	adaugaCarteInLista(&hash.tabel[poz], c);
+//}
+//
+//HashTable citireCartiDinFisier(const char* numeFisier, int dimensiune) {
+//	FILE* f = fopen(numeFisier, "r");
+//	HashTable ht = initializareHashTable(dimensiune);
+//	while (!feof(f)) {
+//		inserareCarteInTabela(ht, citireCarteFisier(f));
+//	}
+//	feof(f);
+//	return ht;
+//}
+//
+//void afisareTabelaDeCarti(HashTable ht) {
+//	for (int i = 0; i < ht.dim;i++) {
+//		printf("Clusterul %d:\n", i+1);
+//		afisareListCarti(ht.tabel[i]);
+//		printf("-------------------------------\n");
+//	}
+//}
+//
+//void dezalocareListaCarti(Nod** cap) {
+//	Nod* aux = *cap;
+//	while (aux) {
+//		Nod* temp = aux;
+//		aux = aux->next;
+//		if (temp->info.titlu != NULL) {
+//			free(temp->info.titlu);
+//		}
+//		if (temp->info.autor != NULL) {
+//			free(temp->info.autor);
+//		}
+//		free(temp);
+//	}
+//}
+//
+//void dezalocareTabelaDeCarti(HashTable *ht) {
+//	for (int i = 0; i < ht->dim;i++) {
+//		dezalocareListaCarti(&ht->tabel[i]);
+//	}
+//	ht->dim = 0;
+//	ht->tabel = NULL;
+//}
+//
+//float* calculeazaPreturiMediiPerClustere(HashTable ht, int* nrClustere) {
+//	(*nrClustere) = 0;
+//	for (int i = 0;i < ht.dim;i++) {
+//		if (ht.tabel[i] != NULL) {
+//			(*nrClustere)++;
+//		}
+//	}
+//	float* vPreturi = (float*)malloc(sizeof(float) * (*nrClustere));
+//	int p = 0;
+//	for (int i = 0;i < ht.dim;i++) {
+//		float sum = 0;
+//		int k = 0;
+//		Nod* aux = ht.tabel[i];
+//		while (aux != NULL) {
+//			sum += aux->info.pret;
+//			k++;
+//			aux = aux->next;
+//		}
+//		vPreturi[p++] = sum / k;
+//	}
+//	return vPreturi;
+//}
+//
+//Carte getCarteDupaCheie(HashTable ht, int id) {
+//	Carte m;
+//	m.id = -1;
+//	int poz = calculeazaHash(id, ht.dim);
+//	if (poz >= 0 && poz < ht.dim) {
+//		Nod* aux = ht.tabel[poz];
+//		while (aux) {
+//			if (aux->info.id == id) {
+//				m = aux->info;
+//				m.titlu = (char*)malloc(sizeof(char) * (strlen(aux->info.titlu) + 1));
+//				strcpy(m.titlu, aux->info.titlu);
+//				m.autor = (char*)malloc(sizeof(char) * (strlen(aux->info.autor) + 1));
+//				strcpy(m.autor, aux->info.autor);
+//				break;
+//			}
+//			aux = aux->next;
+//		}
+//	}
+//	return m;
+//}
+//
+//int main() {
+//	int dim = 4;
+//	HashTable ht = citireCartiDinFisier("carti.txt", dim);
+//	afisareTabelaDeCarti(ht);
+//	printf("=============================================\n");
+//	int nrClustere;
+//	float* preturi = calculeazaPreturiMediiPerClustere(ht, &nrClustere);
+//	for (int i = 0;i < nrClustere;i++) {
+//		printf("Clusterul %d are pretul mediu de: %5.2f\n", i+1, preturi[i]);
+//	}
+//	printf("Cartea cu id 3 este:\n");
+//	afisareCarte(getCarteDupaCheie(ht, 3));
+//	printf("=============================================\n");
+//	dezalocareTabelaDeCarti(&ht);
+//	printf("Tabela dupa dezalocare:\n");
+//	afisareTabelaDeCarti(ht);
+//	return 0;
+//}
