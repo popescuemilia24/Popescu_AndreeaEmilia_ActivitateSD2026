@@ -2034,3 +2034,288 @@
 //
 //    return 0;
 //}
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+//#include<stdlib.h>
+//#include<stdio.h>
+//#include<string.h>
+//
+//struct StructuraFilm {
+//    int id;
+//    int durataMinute;
+//    float rating;
+//    char* titlu;
+//    char* regizor;
+//    unsigned char gen;
+//};
+//
+//typedef struct StructuraFilm Film;
+//
+//typedef struct Nod Nod;
+//struct Nod
+//{
+//    Film info;
+//    Nod* next;
+//    Nod* prev;
+//};
+//
+//typedef struct ListaDubla ListaDubla;
+//struct ListaDubla {
+//    Nod* first;
+//    Nod* last;
+//    int nrNoduri;
+//};
+//
+//
+//
+//Film citireFilmDinFisier(FILE* file) {
+//    char buffer[100];
+//    char sep[3] = ",\n";
+//    fgets(buffer, 100, file);
+//    Film f;
+//    f.id = atoi(strtok(buffer, sep));
+//    f.durataMinute = atoi(strtok(NULL, sep));
+//    f.rating = atof(strtok(NULL, sep));
+//    char* aux;
+//    aux = strtok(NULL, sep);
+//    f.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//    strcpy_s(f.titlu, (strlen(aux) + 1), aux);
+//    aux = strtok(NULL, sep);
+//    f.regizor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//    strcpy_s(f.regizor, (strlen(aux) + 1), aux);
+//    f.gen = strtok(NULL, sep)[0];
+//    return f;
+//}
+//
+//
+//void afisareFilm(Film f) {
+//    printf("ID: %d\n", f.id);
+//    printf("Durata (minute): %d\n", f.durataMinute);
+//    printf("Rating: %5.2f\n", f.rating);
+//    printf("Titlu: %s\n", f.titlu);
+//    printf("Regizor: %s\n", f.regizor);
+//    printf("Gen: %c\n\n", f.gen);
+//}
+//
+//void afisareLDFilme(ListaDubla lista) {
+//    if (lista.first == NULL) {
+//        return;
+//    }
+//    else {
+//        Nod* aux = lista.first;
+//        while (aux) {
+//            afisareFilm(aux->info);
+//            aux = aux->next;
+//        }
+//    }
+//}
+//
+//void adaugaFilmInLista(ListaDubla* lista, Film f) {
+//    Nod* nou = (Nod*)malloc(sizeof(Nod));
+//    nou->info = f;
+//    nou->next = NULL;
+//    nou->prev = lista->last;
+//    if (lista->last != NULL) {
+//        lista->last->next = nou;
+//    }
+//    else {
+//        lista->first = nou;
+//    }
+//    lista->last = nou;
+//    lista->nrNoduri++;
+//}
+//
+//ListaDubla citireLDFilmeDinFisier(const char* numeFisier) {
+//    FILE* f = fopen(numeFisier, "r");
+//    ListaDubla lista;
+//    lista.first = NULL;
+//    lista.last = NULL;
+//    lista.nrNoduri = 0;
+//    while (!feof(f)) {
+//        adaugaFilmInLista(&lista, citireFilmDinFisier(f));
+//    }
+//    fclose(f);
+//    return lista;
+//}
+//
+//void dezalocareLDFilme(ListaDubla* lista) {
+//    while (lista->first != NULL) {
+//        Nod* aux = lista->first;
+//        lista->first = lista->first->next;
+//        if (aux->info.titlu != NULL) {
+//            free(aux->info.titlu);
+//        }
+//        if (aux->info.regizor != NULL) {
+//            free(aux->info.regizor);
+//        }
+//        free(aux);
+//    }
+//    lista->first = NULL;
+//    lista->last = NULL;
+//    lista->nrNoduri = 0;
+//}
+//
+//float calculeazaRatingMediu(ListaDubla lista) {
+//    if (lista.first == NULL) {
+//        return 0;
+//    }
+//    else {
+//        float sum = 0;
+//        int k = 0;
+//        while (lista.first != NULL) {
+//            sum += lista.first->info.rating;
+//            k++;
+//            lista.first = lista.first->next;
+//        }
+//        if (k != 0) {
+//            return sum / k;
+//        }
+//        else {
+//            return 0;
+//        }
+//    }
+//}
+//
+//char* getTitluFilmRatingMare(ListaDubla lista) {
+//    if (lista.first == NULL) {
+//        return NULL;
+//    }
+//    else {
+//        Nod* aux = lista.first;
+//        while (lista.first != NULL) {
+//            if (lista.first->info.rating > aux->info.rating) {
+//                aux = lista.first;
+//            }
+//            lista.first = lista.first->next;
+//        }
+//        char* nume = (char*)malloc(sizeof(char) * (strlen(aux->info.titlu) + 1));
+//        strcpy(nume, aux->info.titlu);
+//        return nume;
+//    }
+//}
+//
+//void stergeFilmRatingMic(ListaDubla* lista) {
+//    if (lista->first == NULL) {
+//        return;
+//    }
+//    else {
+//        Nod* min = lista->first;
+//        if (lista->first != lista->last) {
+//            
+//            Nod* aux = lista->first;
+//            while (aux != NULL) {
+//                if (aux->info.rating < min->info.rating) {
+//                    min = aux;
+//
+//                }
+//                aux = aux->next;
+//            }
+//            if (min == lista->first) {
+//                lista->first = lista->first->next;
+//                lista->first->prev = NULL;
+//            }
+//            else {
+//                if (min->next != NULL) {
+//                    aux = lista->first;
+//                    while (aux->next != NULL && aux != min) {
+//                        aux = aux->next;
+//                    }
+//                    aux->prev->next = aux->next;
+//                    aux->next->prev = aux->prev;
+//                }
+//                else {
+//                    lista->last = lista->last->prev;
+//                    lista->last->next = NULL;
+//                }
+//
+//            }
+//        }
+//        else {
+//            lista->first = NULL;
+//            lista->last = NULL;
+//        }
+//        if (min->info.titlu != NULL) {
+//            free(min->info.titlu);
+//        }
+//        if (min->info.regizor != NULL) {
+//            free(min->info.regizor);
+//        }
+//        free(min);
+//        lista->nrNoduri--;
+//    }
+//}
+//
+//void stergereFilmeDupaGen(ListaDubla* lista, const char gen) {
+//    if (lista->first == NULL) {
+//        return;
+//    }
+//    else {
+//        if (lista->first == lista->last && lista->first->info.gen ==gen) {
+//            lista->first = NULL;
+//            lista->last = NULL;
+//        }
+//        else {
+//            Nod* temp = lista->first;
+//            while (temp != NULL) {
+//                Nod* aux = temp;
+//                temp = temp->next;
+//                if (aux->info.gen == gen) {
+//                    if (aux == lista->first) {
+//                        lista->first = lista->first->next;
+//                        lista->first->prev == NULL;
+//                    }
+//                    else {
+//                        if (aux == lista->last) {
+//                            lista->last = lista->last->prev;
+//                            lista->last->next = NULL;
+//                        }
+//                        else {
+//                            aux->prev->next = aux->next;
+//                            aux->next->prev = aux->prev;
+//                        }
+//                    }
+//                    
+//                    if (aux->info.titlu != NULL) {
+//                        free(aux->info.titlu);
+//                    }
+//                    if (aux->info.regizor != NULL) {
+//                        free(aux->info.regizor);
+//                    }
+//                    free(aux);
+//                    lista->nrNoduri--;
+//                }
+//                
+//                
+//            }
+//            
+//        }
+//    }
+//}
+//
+//
+//
+//
+//int main() {
+//    ListaDubla lista = citireLDFilmeDinFisier("filme.txt");
+//    afisareLDFilme(lista);
+//    printf("============================================\n");
+//    printf("Ratingul mediu este: %5.2f\n", calculeazaRatingMediu(lista));
+//    char* nume = getTitluFilmRatingMare(lista);
+//    printf("Filmul cu cel mai mare rating este: %s\n", nume);
+//    stergeFilmRatingMic(&lista);
+//    printf("Lista dupa stergere film cu rating min:\n");
+//    afisareLDFilme(lista);
+//    printf("============================================\n");
+//    stergereFilmeDupaGen(&lista, 'A');
+//    printf("Lista dupa stergere filme de actiune:\n");
+//    afisareLDFilme(lista);
+//    printf("============================================\n");
+//    dezalocareLDFilme(&lista);
+//    printf("Lista dupa dezalocare:\n");
+//    afisareLDFilme(lista);
+//
+//    return 0;
+//}
