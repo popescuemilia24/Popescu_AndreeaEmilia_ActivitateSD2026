@@ -134,6 +134,7 @@
     <ClCompile Include="Seminar05.c" />
     <ClCompile Include="Seminar07.c" />
     <ClCompile Include="Seminar08.c" />
+    <ClCompile Include="Seminar10.c" />
     <ClCompile Include="Seminar4.c" />
     <ClCompile Include="SeminarSaptamana7.c" />
   </ItemGroup>
@@ -141,6 +142,7 @@
     <Text Include="carti.txt" />
     <Text Include="filme.txt" />
     <Text Include="masini.txt" />
+    <Text Include="masini_arbore.txt" />
     <Text Include="pacienti.txt" />
     <Text Include="zbor.txt" />
   </ItemGroup>
