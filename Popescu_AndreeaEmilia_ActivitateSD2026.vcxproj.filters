@@ -48,6 +48,9 @@
     <ClCompile Include="Seminar11.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Seminar12.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="masini.txt" />
@@ -57,5 +60,6 @@
     <Text Include="pacienti.txt" />
     <Text Include="masini_arbore.txt" />
     <Text Include="Carti_arbore.txt" />
+    <Text Include="muchii.txt" />
   </ItemGroup>
 </Project>
