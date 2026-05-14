@@ -142,10 +142,19 @@
 //void dezalocareNoduriGraf(void* listaPrincipala) {
 //	
 //}
+//void afisareLista(NodPrincipal* graf, int id)
+//{
+//	NodPrincipal* nod = cautaNodDupaID(graf, id);
+//	NodSecundar* cap = nod->vecini;
+//	while (cap) {
+//		afisareMasina(cap->info->info);
+//			cap = cap->next;
+//	}
+//}
 //
 //int main() {
 //	NodPrincipal* graf = citireNoduriMasiniDinFisier("masini.txt");
 //	citireMuchiiDinFisier("muchii.txt",graf);
-//	
+//	afisareLista(graf, 1);
 //	return 0;
 //}
