@@ -56,5 +56,6 @@
     <Text Include="filme.txt" />
     <Text Include="pacienti.txt" />
     <Text Include="masini_arbore.txt" />
+    <Text Include="Carti_arbore.txt" />
   </ItemGroup>
 </Project>

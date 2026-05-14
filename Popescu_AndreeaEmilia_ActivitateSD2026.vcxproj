@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="carti.txt" />
+    <Text Include="Carti_arbore.txt" />
     <Text Include="filme.txt" />
     <Text Include="masini.txt" />
     <Text Include="masini_arbore.txt" />

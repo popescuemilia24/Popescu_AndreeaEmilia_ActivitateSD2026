@@ -203,3 +203,197 @@
 //	afisareMasiniDinArborePreordine(radacina);
 //	return 0;
 //}
+
+
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//
+//struct StructuraCarte {
+//	int id;
+//	int nrPagini;
+//	float pret;
+//	char* titlu;
+//	char* autor;
+//	unsigned char editie;
+//};
+//typedef struct StructuraCarte Carte;
+//
+//
+//struct Nod {
+//	Carte info;
+//	struct Nod* stanga;
+//	struct Nod* dreapta;
+//};typedef struct Nod Nod;
+//
+//Carte citireCarteFisier(FILE* file) {
+//	Carte c;
+//	char buffer[100];
+//	if (fgets(buffer, 100, file) == NULL)
+//	{
+//		c.titlu = NULL;
+//		c.autor = NULL;
+//		return c;
+//	}
+//	char var[3] = ",\n";
+//	c.id = atoi(strtok(buffer, var));
+//	c.nrPagini = atoi(strtok(NULL, var));
+//	c.pret = atof(strtok(NULL, var));
+//	char* aux = strtok(NULL, var);
+//	c.titlu = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.titlu, strlen(aux) + 1, aux);
+//	aux = strtok(NULL, var);
+//	c.autor = (char*)malloc(sizeof(char) * (strlen(aux) + 1));
+//	strcpy_s(c.autor, strlen(aux) + 1, aux);
+//	c.editie = (strtok(NULL, var))[0];
+//	return c;
+//
+//}
+//
+//void afisareCarte(Carte carte) {
+//	printf("\nID: %d\n", carte.id);
+//	printf("Numar pagini: %d\n", carte.nrPagini);
+//	printf("Pret: %5.2f\n", carte.pret);
+//	printf("Titlu: %s\n", carte.titlu);
+//	printf("Autor: %s\n", carte.autor);
+//	printf("Editie: %c\n\n", carte.editie);
+//}
+//
+//
+//void adaugaCarteInArbore(Nod** radacina, Carte carteNoua) {
+//	if (*radacina)
+//	{
+//		if ((*radacina)->info.id < carteNoua.id) {
+//			adaugaCarteInArbore(&(*radacina)->dreapta, carteNoua);
+//		}
+//		if ((*radacina)->info.id > carteNoua.id) {
+//			adaugaCarteInArbore(&(*radacina)->stanga, carteNoua);
+//		}
+//	}
+//	else {
+//		Nod* nou = (Nod*)malloc(sizeof(Nod));
+//		nou->info = carteNoua;
+//		nou->stanga = NULL;
+//		nou->dreapta = NULL;
+//		*radacina = nou;
+//	}
+//}
+//
+//Nod* citireArboreDeCartiDinFisier(const char* numeFisier) {
+//	FILE* f = fopen(numeFisier, "r");
+//	Nod* arbore = NULL;
+//	while (!feof(f)) {
+//		adaugaCarteInArbore(&arbore, citireCarteFisier(f));
+//	}
+//	fclose(f);
+//	return arbore;
+//}
+//
+//void afisareCartiDinArbore(Nod* radacina) {
+//	if (radacina) {
+//		afisareCarte(radacina->info);
+//		afisareCartiDinArbore(radacina->stanga);
+//		afisareCartiDinArbore(radacina->dreapta);
+//	}
+//
+//}
+//
+//void dezalocareArboreDeCarti(Nod** radacina) {
+//	if (*radacina) {
+//		dezalocareArboreDeCarti(&(*radacina)->stanga);
+//		dezalocareArboreDeCarti(&(*radacina)->dreapta);
+//		if (((*radacina)->info.titlu)) free((*radacina)->info.titlu);
+//		if (((*radacina)->info.autor)) free((*radacina)->info.autor);
+//		free(*radacina);
+//		(*radacina) = NULL;
+//	}
+//}
+//
+//Carte getCarteByID(Nod* radacina, int id) {
+//	if (radacina == NULL) {
+//		Carte c;
+//		c.id = -1;
+//		return c;
+//	}
+//	else
+//	{
+//		if (radacina->info.id == id) {
+//			Carte c = radacina->info;
+//			c.titlu = (char*)malloc(sizeof(char) * (strlen(radacina->info.titlu) + 1));
+//			strcpy(c.titlu, radacina->info.titlu);
+//			c.autor = (char*)malloc(sizeof(char) * (strlen(radacina->info.autor) + 1));
+//			strcpy(c.autor, radacina->info.autor);
+//			return c;
+//		}
+//		if (radacina->info.id < id) {
+//			return getCarteByID(radacina->dreapta, id);
+//		}
+//		if (radacina->info.id > id) {
+//			return getCarteByID(radacina->stanga, id);
+//		}
+//	}
+//
+//}
+//
+//int determinaNumarNoduri(Nod* radacina) {
+//	if (radacina) {
+//		return determinaNumarNoduri(radacina->stanga) + determinaNumarNoduri(radacina->dreapta) + 1;
+//	}
+//	return 0;
+//}
+//
+//int calculeazaInaltimeArbore(Nod* radacina) {
+//	if (radacina) {
+//		return max(calculeazaInaltimeArbore(radacina->stanga), calculeazaInaltimeArbore(radacina->dreapta)) + 1;
+//	}
+//	return 0;
+//}
+//
+//float calculeazaPretTotal(Nod* radacina) {
+//	if (radacina) {
+//		return calculeazaPretTotal(radacina->stanga) + calculeazaPretTotal(radacina->dreapta) + radacina->info.pret;
+//	}
+//	return 0;
+//}
+//
+//float calculeazaPretulCartilorUnuiAutor(Nod* radacina, const char* numeAutor) {
+//	if (radacina) {
+//		if (strcmp(radacina->info.autor, numeAutor) == 0) {
+//			return calculeazaPretulCartilorUnuiAutor(radacina->stanga, numeAutor) + calculeazaPretulCartilorUnuiAutor(radacina->dreapta, numeAutor) + radacina->info.pret;
+//		}
+//		else {
+//			return calculeazaPretulCartilorUnuiAutor(radacina->stanga, numeAutor) + calculeazaPretulCartilorUnuiAutor(radacina->dreapta, numeAutor);
+//		}
+//	}
+//	return 0;
+//}
+//
+//int main() {
+//	Nod* radacina = citireArboreDeCartiDinFisier("Carti_arbore.txt");
+//	afisareCartiDinArbore(radacina);
+//
+//	int id = 8;
+//	Carte c = getCarteByID(radacina, id);
+//	printf("Cartea cu id-ul %d:\n", id);
+//	afisareCarte(c);
+//	printf("\n");
+//
+//	printf("Numarul de noduri din arbore este: %d\n", determinaNumarNoduri(radacina));
+//	printf("\n");
+//	printf("Inaltimea arborelui este: %d\n", calculeazaInaltimeArbore(radacina));
+//	printf("\n");
+//	printf("Pretul total este: %5.2f\n", calculeazaPretTotal(radacina));
+//	printf("\n");
+//
+//	char* autor = "Liviu Rebreanu";
+//	printf("Pretul total al cartilor autorului %s este %5.2f\n", autor, calculeazaPretulCartilorUnuiAutor(radacina, autor));
+//	printf("\n");
+//
+//	dezalocareArboreDeCarti(&radacina);
+//	printf("Arbore dupa dezalocare: \n");
+//	afisareCartiDinArbore(radacina);
+//
+//
+//	return 0;
+//}
